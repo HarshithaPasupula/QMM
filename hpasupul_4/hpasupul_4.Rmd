@@ -1,0 +1,69 @@
+---
+title: "goal programming"
+author: "harshitha pasupula"
+date: "2023-26-11"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+As per the given question the maximize function Z= P-6C-3D, where
+P = total (discounted) profit over the life of the new products,
+C = change (in either direction) in the current level of employment,
+D = decrease (if any) in next year’s earnings from the current year’s level.
+
+From the table 
+#the total profit P= 20x1 + 15x2 + 25x3;
+C=y1neg + y1pos
+#y1neg + y1pos = 6x1 + 4x2 + 5x3 - 50;(employment level constraint) 
+D=y2neg + y2pos
+#y2neg + y2pos = 8x1 + 7x2 + 5x3 - 75;(earnings next year constraint )
+
+Now, load the library
+```{r}
+library(lpSolveAPI)
+```
+Question 1:
+
+Defining the values y1pos, y1neg, y2pos, y2neg
+y1pos = positive deviation in employment level
+y1neg = negative deviation in employment level
+y2pos = positive deviation in goal regarding earnings next year
+y2neg = negative deviation in goal regarding earnings next year
+
+Question 2:
+The max function : 
+*Max Z = P-6C-3D*
+Substituting the values in this maximum function:
+*max: 20x1 + 15x2 + 25x3 - 6y1pos - 6y1neg - 3y2neg;*
+
+Question 3
+Formulating and solving the LP Model:
+
+```{r}
+x <- read.lp("C:/Users/harsh/OneDrive/Desktop/goalassignment.lp")
+x
+```
+
+Solve the lp model
+```{r}
+solve(x)
+get.objective(x)        # get objective value
+get.variables(x)        # get values of decision variables
+get.constraints(x)      # get constraint RHS values
+```
+*Findings from the problem:*
+1)The optimal objective value of the LP problem is 225 and the values of the decision variables are x1=0, x2=0, x3=15, y1pos=25, y1neg=0, y2neg=0, y1pos=0.
+
+2)As a result of this solution, X3 is the only product which can maximize the product,15 units of Product 3 (x3) can be produced without any overages or underages and still meet the employment level and earnings goals. This optimal solution implies that Products 1 and 2 cannot be produced since the decision variables x1 and x2 are zero. Actually, the company aimed to keep employment stable at fifty hundred employees but ended up with exceeding by 25 employees which is y1pos. This excess would lead to the additional costs due to the higher employee count.
+
+3)y2pos and y2neg are aimed to track the rise or fall in next year's earnings from the present level, indicated as "0" here, signifying no change. Consequently, the earnings for the upcoming year stay consistent with the current year's earnings.
+
+4)225 million dollars is the maximum objective function value obtained, indicating that the new products will generate the maximum total profit (discounted) over their period. In this summary, we provide insights into the optimal production for maximizing profits and meeting employment and earnings goals simultaneously.
+
+
+
